@@ -2,8 +2,10 @@ data = {}
 local QBRItems
 local VorpCore
 local VorpInv
+local RSGCore = exports['rsg-core']:GetCoreObject()
+local RSGInv
 
-local framework = "redemrp" --"redemrp" or "qbr" or "vorp" MAKE SURE TO NOT ADD WEAPONS FOR VORP
+local framework = "rsg" --"redemrp" or "qbr" or "rsg" or "vorp" MAKE SURE TO NOT ADD WEAPONS FOR VORP
 
 if framework == "redemrp" then
 	TriggerEvent("redemrp_inventory:getData",function(call)
@@ -16,6 +18,9 @@ elseif framework == "vorp" then
 	    VorpCore = core
 	end)
 	VorpInv = exports.vorp_inventory:vorp_inventoryApi()
+elseif framework == "rsg" then
+    local src = source
+    local Player = RSGCore.Functions.GetPlayer(src)
 end
 
 
@@ -54,7 +59,7 @@ elseif framework == "qbr" then
           User.Functions.AddMoney("cash", Config.Gifts[random][2], "desc")
           text = Config.Recieved.."\n+$"..Config.Gifts[random][2]
      end
-     TriggerClientEvent("Notification:left_xmas", _source, Config.Title, text, "scoretimer_textures", "scoretimer_generic_tick", 2000)
+     
 elseif framework == "vorp" then 
   local random = math.random(1,#Config.Gifts)
      if  Config.Gifts[random][1] ~= "money" then
@@ -66,6 +71,17 @@ elseif framework == "vorp" then
           text = Config.Recieved.."\n+$"..Config.Gifts[random][2]
      end
      TriggerClientEvent("Notification:left_xmas", _source, Config.Title, text, "scoretimer_textures", "scoretimer_generic_tick", 2000)
+elseif framework == "rsg" then
+    local random = math.random(1,#Config.Gifts)
+    if  Config.Gifts[random][1] ~= "money" then
+        local User = RSGCore.Functions.GetPlayer(source)
+        Player.Functions.AddItem(Config.Gifts[random][1], Config.Gifts[random][2], 1)
+        text = Config.Recieved.."\n"..Config.Gifts[random][1].." ("..Config.Gifts[random][2]..")"
+    else
+        Player.Functions.AddMoney("cash", Config.Gifts[random][2])
+        text = Config.Recieved.."\n+$"..Config.Gifts[random][2]
+    end
+    TriggerClientEvent("Notification:left_xmas", _source, Config.Title, text, "scoretimer_textures", "scoretimer_generic_tick", 2000)
 end
 end)
 

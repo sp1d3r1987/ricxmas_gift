@@ -3,7 +3,10 @@ AddEventHandler("ricxmas_gift:triggergift", function()
     TriggerServerEvent("ricxmas_gift:addgift")
 end)
 
-  
+RegisterCommand("addgift",function(src,args,raw)
+    TriggerEvent("ricxmas_gift:addgift")
+end)
+
   --Basic Notification
 RegisterNetEvent('Notification:left_xmas')
 AddEventHandler('Notification:left_xmas', function(t1, t2, dict, txtr, timer)
